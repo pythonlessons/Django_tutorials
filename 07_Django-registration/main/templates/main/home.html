@@ -1,0 +1,24 @@
+{% extends "main/header.html" %}
+{% block content %}
+    <div class="row display-flex justify-content-start">
+    {% for object in objects %}
+        <div class="col-lg-4 col-md-6 col-sm-12 mobiledevice">
+            <article class="media content-section customhover" style="height: 95%;">
+                <div class="media-body">
+                    <a href="/{{object.slug}}">
+                        <img class="img-fluid" src="/">
+                    </a>
+                    <div>
+                        <a class="article-title line-clamp-2 title-style" style="font-size: 22px" href="/{{object.slug}}">
+                            {{ object.title }}
+                        </a>
+                        <a href="/{{object.slug}}" style="text-decoration: none;">
+                            <p class="article-content line-clamp-5 subtitle-style">{{ object.subtitle }}</p>
+                        </a>
+                    </div>
+                </div>
+            </article>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock content %}

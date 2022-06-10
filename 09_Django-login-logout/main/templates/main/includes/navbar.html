@@ -16,12 +16,18 @@
                 </div>
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
-                    <a class="nav-item nav-link" href="/">
-                        Log in <i class="fas fa-sign-in-alt"></i>
-                    </a>
-                    <a class="nav-item nav-link" href="/">
-                        Sign up <i class="fas fa-user-plus"></i>
-                    </a>
+                    {% if user.is_authenticated %}
+                        <a class="nav-item nav-link" href="{% url 'logout' %}">
+                            Log out <i class="fas fa-sign-out-alt"></i>
+                        </a>
+                    {% else %}
+                        <a class="nav-item nav-link" href="{% url 'login' %}">
+                            Log in <i class="fas fa-sign-in-alt"></i>
+                        </a>
+                        <a class="nav-item nav-link" href="{% url 'register' %}">
+                            Sign up <i class="fas fa-user-plus"></i>
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

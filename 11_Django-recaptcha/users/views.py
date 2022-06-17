@@ -51,7 +51,10 @@ def custom_login(request):
                 return redirect("homepage")
 
         else:
-            for error in list(form.errors.values()):
+            for key, error in list(form.errors.items()):
+                if key == 'captcha' and error[0] == 'This field is required.':
+                    messages.error(request, "You must pass the reCAPTCHA test")
+                    continue
                 messages.error(request, error) 
 
     form = UserLoginForm()

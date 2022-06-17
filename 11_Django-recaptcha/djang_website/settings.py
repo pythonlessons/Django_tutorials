@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'tinymce',
     'fontawesomefree',
     'crispy_forms',
+    'captcha',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -133,6 +134,9 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'login'
 
 AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']
+
+RECAPTCHA_PUBLIC_KEY = "6LcW_XEgAAAAANIQystti1hDK4fMLaRxYK7VFuqj"
+RECAPTCHA_PRIVATE_KEY = "6LcW_XEgAAAAAOzMSda8wvWrd6QSW0jEAyHGr9qZ"
 
 TINYMCE_DEFAULT_CONFIG = {
     'custom_undo_redo_levels': 100,

@@ -6,12 +6,13 @@ class ArticleSeriesAdmin(admin.ModelAdmin):
         'title',
         'subtitle',
         'slug',
+        'author',
         # 'published'
     ]
 
 class ArticleAdmin(admin.ModelAdmin):
     fieldsets = [
-        ("Header", {"fields": ['title', 'subtitle', 'article_slug', 'series']}),
+        ("Header", {"fields": ['title', 'subtitle', 'article_slug', 'series', 'author']}),
         ("Content", {"fields": ['content', 'notes']}),
         ("Date", {"fields": ['modified']})
     ]

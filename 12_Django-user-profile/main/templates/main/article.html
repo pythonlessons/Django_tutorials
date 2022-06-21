@@ -8,6 +8,12 @@
                 <h2 class="subtitle-style">{{ object.subtitle }}</h2>
             </div>
         </div>
+        <div class="d-flex article-metadata">
+            <div>
+                <a class='mr-2' href="{% url 'profile' object.author %}">{{ object.author }}</a>
+                <small class="text-muted">Published {{ object.published|date:"F d, Y" }}</small>
+            </div>
+        </div>
     </div>
     <div class="col-lg-9 col-md-12 col-sm-12" id="content">
         <div class="article-style">

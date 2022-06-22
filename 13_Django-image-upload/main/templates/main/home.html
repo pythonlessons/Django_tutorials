@@ -6,7 +6,9 @@
             <article class="media content-section customhover" style="height: 95%;">
                 <div class="media-body">
                     <a href="/{{object.slug}}">
-                        <img class="img-fluid" src="/">
+                        <div class="aspect-ratio-box">
+                            <img class="img-fluid" src="{{ object.image.url }}">
+                        </div>
                     </a>
                     <div class="article-metadata">
                         <a class='mr-2' href="{% url 'profile' object.author %}">{{ object.author }}</a>

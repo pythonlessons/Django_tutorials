@@ -3,3 +3,4 @@ django-tinymce
 fontawesomefree
 django-crispy-forms
 django-recaptcha
+pillow

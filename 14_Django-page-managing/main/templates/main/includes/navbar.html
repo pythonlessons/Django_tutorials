@@ -17,6 +17,11 @@
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
+                        {% if user.is_superuser %}
+                            <a class="nav-item nav-link" href="admin/">Admin</a>
+                            <a class="nav-item nav-link" href="{% url 'series-create' %}">New Series</a>
+                            <a class="nav-item nav-link" href="{% url 'post-create' %}">New Post</a>
+                        {% endif %}
                         <a class="nav-item nav-link" href="{% url 'profile' user.username %}">
                             {{user.username}} <i class="fas fa-user"></i>
                         </a>

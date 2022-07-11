@@ -1,7 +1,16 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+
+from djang_website.settings import MEDIA_URL
+
 from .models import Article, ArticleSeries
 from .decorators import user_is_superuser
 from .forms import SeriesCreateForm, ArticleCreateForm, SeriesUpdateForm, ArticleUpdateForm
+
+import os
+from uuid import uuid4
 
 # Create your views here.
 def homepage(request):
@@ -154,3 +163,33 @@ def article_delete(request, series, article):
                 "type": "article"
                 }
             )
+
+@csrf_exempt
+@user_is_superuser
+def upload_image(request, series, article):
+    if request.method != 'POST':
+        return JsonResponse({"Error Message": "Wrong request"})
+
+    matching_article = Article.objects.filter(series__slug=series, article_slug=article).first()
+    if not matching_article:
+        return JsonResponse({"Error Message": f"Wrong series({series}) or article ({article})"})
+
+    file_obj = request.FILES['file']
+    file_name_suffix = file_obj.name.split('.')[-1]
+    if file_name_suffix not in ['jpg', 'png', 'gif', 'jpeg']:
+        return JsonResponse({"Error Message": f"Wrong file suffix ({file_name_suffix}), supported are .jpg, .png, .git, .pjeg"})
+
+    file_path = os.path.join(settings.MEDIA_ROOT, 'ArticleSeries', matching_article.slug, file_obj.name)
+
+    if os.path.exists(file_path):
+        file_obj.name = str(uuid4()) + '.' + file_name_suffix
+        file_path = os.path.join(settings.MEDIA_ROOT, 'ArticleSeries', matching_article.slug, file_obj.name)
+
+    with open(file_path, 'wb+') as f:
+        for chunk in file_obj.chunks():
+            f.write(chunk)
+
+    return JsonResponse({
+        "Message": "Image upload successfully",
+        "location": os.path.join(settings.MEDIA_URL, 'ArticleSeries', matching_article.slug, file_obj.name)
+        })

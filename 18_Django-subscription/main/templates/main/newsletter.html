@@ -1,0 +1,14 @@
+{% extends "main/header.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy  }}
+            {{ form.media  }}
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Send</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

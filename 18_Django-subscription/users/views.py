@@ -1,3 +1,4 @@
+from logging.config import valid_ident
 from typing import Protocol
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate, get_user_model
@@ -8,11 +9,14 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 from django.db.models.query_utils import Q
 
 from .forms import UserRegistrationForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm
 from .decorators import user_not_authenticated
 from .tokens import account_activation_token
+from .models import SubscribedUsers
 
 def activate(request, uidb64, token):
     User = get_user_model()
@@ -221,3 +225,34 @@ def passwordResetConfirm(request, uidb64, token):
 
     messages.error(request, 'Something went wrong, redirecting back to Homepage')
     return redirect("homepage")
+
+def subscribe(request):
+    if request.method == 'POST':
+        name = request.POST.get('name', None)
+        email = request.POST.get('email', None)
+
+        if not name or not email:
+            messages.error(request, "You must type legit name and email to subscribe to a Newsletter")
+            return redirect("/")
+
+        if get_user_model().objects.filter(email=email).first():
+            messages.error(request, f"Found registered user with associated {email} email. You must login to subscribe or unsubscribe.")
+            return redirect(request.META.get("HTTP_REFERER", "/")) 
+
+        subscribe_user = SubscribedUsers.objects.filter(email=email).first()
+        if subscribe_user:
+            messages.error(request, f"{email} email address is already subscriber.")
+            return redirect(request.META.get("HTTP_REFERER", "/"))  
+
+        try:
+            validate_email(email)
+        except ValidationError as e:
+            messages.error(request, e.messages[0])
+            return redirect("/")
+
+        subscribe_model_instance = SubscribedUsers()
+        subscribe_model_instance.name = name
+        subscribe_model_instance.email = email
+        subscribe_model_instance.save()
+        messages.success(request, f'{email} email was successfully subscribed to our newsletter!')
+        return redirect(request.META.get("HTTP_REFERER", "/"))  

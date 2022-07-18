@@ -189,3 +189,23 @@ a.article-title:hover {
   height: 125px;
   padding: 5px;
 }
+
+.site-footer .navbar-nav .nav-link {
+  color: var(--brightText);
+}
+
+.site-footer .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-footer .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+.footer-text h4, .footer-text p, .footer-text a {
+  color: var(--brightText);
+}
+
+.footer-text a:hover {
+  color: #ffffff;
+}

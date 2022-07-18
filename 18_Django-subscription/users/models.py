@@ -1,9 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.template.defaultfilters import slugify
+from django.utils import timezone
 import os
 
-# Create your models here.
 class CustomUser(AbstractUser):
     def image_upload_to(self, instance=None):
         if instance:
@@ -23,3 +22,11 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
+
+class SubscribedUsers(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True, max_length=100)
+    created_date = models.DateTimeField('Date created', default=timezone.now)
+
+    def __str__(self):
+        return self.email

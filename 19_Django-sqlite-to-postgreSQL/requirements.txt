@@ -5,3 +5,4 @@ django-crispy-forms
 django-recaptcha
 pillow
 six
+psycopg2

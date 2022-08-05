@@ -1,0 +1,41 @@
+{% extends "main/header.html" %}
+{% block content %}
+    <div class="row display-flex justify-content-start">
+    {% for object in objects %}
+        <div class="col-lg-4 col-md-6 col-sm-12 mobiledevice">
+            <article class="media content-section customhover" style="height: 95%;">
+                <div class="media-body">
+                    <a href="/{{object.slug}}">
+                        <div class="aspect-ratio-box">
+                            <img class="img-fluid" src="{{ object.image.url }}">
+                        </div>
+                    </a>
+                    <div class="article-metadata">
+                        <a class='mr-2' href="{% url 'profile' object.author %}">{{ object.author }}</a>
+                        <small class="text-muted">{{ object.published|date:"F d, Y" }}</small>
+                        {% if object.author == user %}
+                            <div style="float:right">
+                                {% if type == "series" %}
+                                    <a class="btn btncolor btn-sm mt-1 mb-1" href="{% url 'series_update' object.slug %}">Update</a>
+                                    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'series_delete' object.slug %}">Delete</a>
+                                {% else %}
+                                    <a class="btn btncolor btn-sm mt-1 mb-1" href="{% url 'article_update' object.series.slug object.article_slug %}">Update</a>
+                                    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'article_delete' object.series.slug object.article_slug  %}">Delete</a>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <a class="article-title line-clamp-2 title-style" style="font-size: 22px" href="/{{object.slug}}">
+                            {{ object.title }}
+                        </a>
+                        <a href="/{{object.slug}}" style="text-decoration: none;">
+                            <p class="article-content line-clamp-5 subtitle-style">{{ object.subtitle }}</p>
+                        </a>
+                    </div>
+                </div>
+            </article>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock content %}

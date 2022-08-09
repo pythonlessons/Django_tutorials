@@ -18,6 +18,10 @@ from .decorators import user_not_authenticated
 from .tokens import account_activation_token
 from .models import SubscribedUsers
 
+def signup_redirect(request):
+    messages.error(request, "Something wrong here, it may be that you already have account!")
+    return redirect("homepage")
+
 def activate(request, uidb64, token):
     User = get_user_model()
     try:

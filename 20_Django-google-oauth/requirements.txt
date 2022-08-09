@@ -6,3 +6,4 @@ django-recaptcha
 pillow
 six
 psycopg2
+django-allauth
